@@ -1,0 +1,40 @@
+library(httr2)
+library(jsonlite)
+library(dplyr)
+library(purrr)
+
+# create the API URL
+base_url <- "https://bdfed.stitch.mlbinfra.com/bdfed/stats/player"
+
+# Building API request
+req <- request(base_url) |>
+  req_url_query(
+    env = "prod",
+    season = 2022,
+    stats = "season",
+    group = "hitting",
+    gameType = "R",
+    playerPool = "QUALIFIED",
+    leagueIds = 117,
+    limit = 1000,
+    offset = 0,
+    sortStat = "homeRuns",
+    order = "desc"
+  )
+
+# Send request
+response <- req_perform(req)
+
+# read JSON response
+json <- resp_body_json(response)
+
+names(json)
+
+length(json$stats)
+
+# player 1
+json$stats[[1]]
+
+names(json$stats[[10]])
+json$stats[[10]]$playerName
+json$stats[[1]]$iso
