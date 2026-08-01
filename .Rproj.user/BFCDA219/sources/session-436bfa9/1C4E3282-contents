@@ -84,3 +84,5 @@ file.exists(
   "Data/Raw/International_lg_hitters_2022.csv"
 )
 
+class(hitters_2022_int)
+
