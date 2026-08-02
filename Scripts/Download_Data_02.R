@@ -287,7 +287,7 @@ file.exists("Data/Raw/Milb_qualified_hitters_2022_2025.csv")
 file.exists("Data/Raw/Download_audit_2022_2025.csv")
 
 saveRDS(all_hitters_raw,
-        "Data/Raw/Milb_qualified_hitters_2022_2025.csv")
+        "Data/Raw/Milb_qualified_hitters_2022_2025.rds")
 
 file.info(c(
   "Data/Raw/Milb_qualified_hitters_2022_2025.csv",
