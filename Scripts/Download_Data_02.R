@@ -1,7 +1,11 @@
+# install.packages("tidyr")
+
 library(httr2)
 library(dplyr)
 library(tibble)
 library(readr)
+library(purrr)
+library(tidyr)
 
 # Base URL
 base_url <- "https://bdfed.stitch.mlbinfra.com/bdfed/stats/player"
@@ -53,6 +57,21 @@ get_milb_hitters <- function(
     simplifyVector = FALSE
   )
   
+  if(length(json$stats) == 0) {
+    warning(
+      "No data returned for ",
+      league_name,
+      " - ",
+      season
+    )
+    
+    return(
+      requested_season = season,
+      requested_league_id = league_id,
+      requested_league_name = league_name,
+      requested_level = level
+    )
+  }
   hitters <- bind_rows(json$stats) |> 
     mutate(
       requested_season = season,
@@ -60,6 +79,8 @@ get_milb_hitters <- function(
       requested_league_name = league_name,
       requested_level = level
       )
+  
+  Sys.sleep(0.25)
   
   hitters
 }
@@ -106,15 +127,15 @@ league_reference <- tibble(
   league_id = c(
     117,
     112,
-    NA,
-    NA,
-    NA,
-    NA,
-    NA,
-    NA,
-    NA,
-    NA,
-    NA
+    113,
+    111,
+    109,
+    118,
+    126,
+    116,
+    110,
+    122,
+    123
   )
 )
 
@@ -154,3 +175,121 @@ two_league_test |>
         leagueName,
         download_source,
         name = "qualified_hitters")
+
+nrow(test_hitters) > 0
+
+league_reference
+
+seasons <- 2022:2025
+
+seasons
+
+# Create every season-lg combo
+download_plan <- crossing(
+  season = seasons,
+  league_reference
+)
+
+download_plan
+nrow(download_plan)
+
+head(download_plan)
+
+# test on three leagues first
+test_plan <- download_plan |> 
+  slice(1:3)
+
+test_plan
+
+test_results <- pmap(
+  test_plan,
+  function(season, league_name, level, league_id) {
+    get_milb_hitters(
+      season = season,
+      league_id = league_id,
+      league_name = league_name,
+      level = level
+    )
+  }
+)
+
+class(test_results)
+
+map_int(test_results, nrow)
+
+test_combined <- list_rbind(test_results)
+dim(test_combined)
+
+test_combined |> 
+  distinct(
+    requested_season,
+    requested_league_id,
+    requested_league_name,
+    requested_level
+  )
+
+nrow(test_combined) == sum(map_int(test_results, nrow))
+
+all_results <- pmap(
+  download_plan,
+  function(season, league_name, level, league_id) {
+    get_milb_hitters(
+      season = season,
+      league_id = league_id,
+      league_name = league_name,
+      level = level
+    )
+  }
+)
+
+length(all_results)
+
+request_counts <- download_plan |> 
+  mutate(
+    qualified_hitters = map_int(all_results, nrow)
+  )
+request_counts
+
+request_counts |> 
+  filter(qualified_hitters == 0)
+
+summary(request_counts$qualified_hitters)
+
+# Create raw data - all leagues and years
+all_hitters_raw <- list_rbind(all_results)
+dim(all_hitters_raw)
+
+all_hitters_raw |> 
+  count(requested_season, name = "player_seasons")
+
+all_hitters_raw |> 
+  count(requested_season, requested_level, name = "player_seasons") |> 
+  arrange(requested_season, requested_level)
+
+# check for duplicates
+duplicate_check <- all_hitters_raw |> 
+  count(requested_season, requested_league_id, playerId) |> 
+  filter(n > 1)
+duplicate_check
+
+# Save the full raw dataset
+dir.create("Data/Raw",
+           recursive =  TRUE,
+           showWarnings = FALSE)
+
+write_csv(all_hitters_raw,
+          "Data/Raw/Milb_qualified_hitters_2022_2025.csv")
+
+write_csv(request_counts,
+          "Data/Raw/Download_audit_2022_2025.csv")
+
+file.exists("Data/Raw/Milb_qualified_hitters_2022_2025.csv")
+file.exists("Data/Raw/Download_audit_2022_2025.csv")
+
+saveRDS(all_hitters_raw,
+        "Data/Raw/Milb_qualified_hitters_2022_2025.csv")
+
+file.info(c(
+  "Data/Raw/Milb_qualified_hitters_2022_2025.csv",
+  "Data/Raw/Milb_qualified_hitters_2022_2025.csv"
+))$size
