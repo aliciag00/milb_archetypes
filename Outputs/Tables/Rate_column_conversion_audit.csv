@@ -1,0 +1,16 @@
+column_name,missing_before,placeholder_count,missing_after,unexplained_missing
+babip,0,0,0,0
+pitchesPerPlateAppearance,0,0,0,0
+walksPerPlateAppearance,0,0,0,0
+strikeoutsPerPlateAppearance,0,0,0,0
+homeRunsPerPlateAppearance,0,0,0,0
+walksPerStrikeout,0,0,0,0
+iso,0,0,0,0
+avg,0,0,0,0
+obp,0,0,0,0
+slg,0,0,0,0
+ops,0,0,0,0
+stolenBasePercentage,0,45,45,0
+caughtStealingPercentage,0,45,45,0
+groundOutsToAirouts,0,0,0,0
+atBatsPerHomeRun,0,19,19,0
