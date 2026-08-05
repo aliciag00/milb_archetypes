@@ -212,7 +212,7 @@ saveRDS(clustering_data,"Data/Final/Clustering_data.rds")
 
 saveRDS(model_matrix_unscaled,"Data/Final/Model_matrix_unscaled.rds")
 
-saveRDS(model_matrix_scaled,"Data/Final/Model_matrix_unscaled.rds")
+saveRDS(model_matrix_scaled,"Data/Final/Model_matrix_scaled.rds")
 
 saveRDS(clustering_record_key,"Data/Final/Clustering_record_key.rds")
 
