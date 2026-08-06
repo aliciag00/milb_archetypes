@@ -404,12 +404,46 @@ cluster_labels <- tibble(cluster = 1:4,
                                             "Power Hitters with Moderate Speed",
                                             "Fast, Aggressive Contact Hitters "))
 
-player_cluster_profiles <-
-  player_cluster_profiles |>
+
+clustering_record_key <- readRDS(
+  "Data/Final/Clustering_record_key.rds"
+)
+
+model_matrix_unscaled <- readRDS(
+  "Data/Final/Model_matrix_unscaled.rds"
+)
+
+stopifnot(
+  nrow(clustering_record_key) ==
+    nrow(model_matrix_unscaled)
+)
+
+stopifnot(
+  nrow(clustering_record_key) ==
+    length(final_kmeans_model$cluster)
+)
+
+player_cluster_profiles <- bind_cols(
+  clustering_record_key,
+  as_tibble(model_matrix_unscaled)
+) |>
+  mutate(
+    cluster = final_kmeans_model$cluster
+  ) |>
   left_join(
     cluster_labels,
     by = "cluster"
   )
+
+saveRDS(
+  player_cluster_profiles,
+  "Data/Final/Player_cluster_profiles.rds"
+)
+
+write_csv(
+  player_cluster_profiles,
+  "Data/Final/Player_cluster_profiles.csv"
+)
 
 # 16
 

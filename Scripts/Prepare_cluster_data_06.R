@@ -9,12 +9,12 @@ modeling_data <- readRDS(
 )
 
 feature_review <- read_csv(
-  "outputs/tables/model_feature_review.csv",
+  "Outputs/Tables/Model_feature_review.csv",
   show_col_types = FALSE
 )
 
 strong_correlations <- read_csv(
-  "outputs/tables/model_feature_correlations.csv",
+  "Outputs/Tables/Model_feature_correlations.csv",
   show_col_types = FALSE
 )
 
@@ -173,6 +173,38 @@ map_lgl(model_matrix_unscaled, is.numeric)
 # step 12
 model_matrix_scaled <- scale(model_matrix_unscaled)
 
+scaling_parameters <- tibble(
+  feature = colnames(model_matrix_scaled),
+  center = as.numeric(
+    attr(model_matrix_scaled, "scaled:center")
+  ),
+  scale = as.numeric(
+    attr(model_matrix_scaled, "scaled:scale")
+  )
+)
+
+scaling_parameters
+
+write_csv(
+  scaling_parameters,
+  "Models/Scaling_parameters.csv"
+)
+
+saveRDS(
+  model_matrix_unscaled,
+  "Data/Final/Model_matrix_unscaled.rds"
+)
+
+saveRDS(
+  model_matrix_scaled,
+  "Data/Final/Model_matrix_scaled.rds"
+)
+
+saveRDS(
+  final_model_features,
+  "Models/Final_model_features.rds"
+)
+
 class(model_matrix_scaled)
 dim(model_matrix_scaled)
 
@@ -180,21 +212,6 @@ dim(model_matrix_scaled)
 round(colMeans(model_matrix_scaled),6)
 
 round(apply(model_matrix_scaled,2,sd),6)
-
-# save scaling parameters
-scaling_parameters <- tibble(
-  feature = final_model_features,
-  center = attr(
-    model_matrix_scaled,
-    "scaled:center"
-  ),
-  scale = attr(
-    model_matrix_scaled,
-    "scaled:scale"
-  )
-)
-
-scaling_parameters
 
 dir.create("Models", recursive = TRUE, showWarnings = FALSE)
 write_csv(scaling_parameters,"Models/Scaling_parameters.csv")
