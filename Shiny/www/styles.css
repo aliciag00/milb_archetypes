@@ -1,0 +1,107 @@
+body {
+  background-color: #f4f6f8;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  background-color: #0b1f33;
+  border-color: #0b1f33;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: white;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  color: #d9e2ec;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+  background-color: #183a5a;
+  color: white;
+}
+
+h1, h2, h3, h4 {
+  color: #0b1f33;
+}
+
+.well {
+  background-color: white;
+  border-radius: 12px;
+  border: 1px solid #dfe3e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.assignment-card {
+  background-color: white;
+  border-left: 6px solid #b31b34;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.assignment-card h2 {
+  margin-top: 0;
+  color: #0b1f33;
+}
+
+.btn {
+  border-radius: 8px;
+}
+
+.btn-default {
+  background-color: #b31b34;
+  border-color: #b31b34;
+  color: white;
+}
+
+.btn-default:hover {
+  background-color: #8f1529;
+  border-color: #8f1529;
+  color: white;
+}
+
+table {
+  background-color: white;
+}
+
+.table {
+  border-radius: 8px;
+}
+
+hr {
+  border-top: 1px solid #dfe3e8;
+}
+
+.archetype-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  min-height: 180px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.cluster-1 {
+  border-top: 6px solid #b31b34;
+  border-left: 6px solid #b31b34
+}
+
+.cluster-2 {
+  border-top: 6px solid #1f5f8b;
+  border-left: 6px solid #1f5f8b
+}
+
+.cluster-3 {
+  border-top: 6px solid #8a4f18;
+  border-left: 6px solid #8a4f18
+}
+
+.cluster-4 {
+  border-top: 6px solid #356859;
+  border-left: 6px solid #356859;
+}
